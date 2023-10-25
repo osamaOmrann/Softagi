@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:softagi/core/database/api/end_points.dart';
+import 'package:softagi/core/services/service_locator.dart';
 import '../cache/cache_helper.dart';
 
 class ApiInterceptors extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    /*options.headers[APIKeys.token] =
+    options.headers[APIKeys.token] =
     sl<CacheHelper>().getData(key: APIKeys.token) != null
-        ? 'FOODAPI ${sl<CacheHelper>().getData(key: APIKeys.token)}'
+        ? '${sl<CacheHelper>().getData(key: APIKeys.token)}'
         : null;
-    super.onRequest(options, handler);*/
+    super.onRequest(options, handler);
   }
 
   @override

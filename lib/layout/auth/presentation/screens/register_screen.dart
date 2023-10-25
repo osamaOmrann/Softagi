@@ -7,12 +7,26 @@ import 'package:softagi/core/routes/routes.dart';
 import 'package:softagi/core/utils/validation_utils.dart';
 import 'package:softagi/layout/products/reset_product_data_screen.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
 TextEditingController nameController = TextEditingController();
+
 TextEditingController emailController = TextEditingController();
+
 TextEditingController passwordController = TextEditingController();
+
 TextEditingController passwordIIController = TextEditingController();
+
+bool securePassword = true;
+
+bool securePasswordConfirm = true;
+
 var formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height, width = MediaQuery.of(context).size.width;
@@ -40,6 +54,7 @@ var formKey = GlobalKey<FormState>();
                 ),
                 SizedBox(height: height * .03,),
                 TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   validator: (text) {
                     if (text == null || text.trim().isEmpty) {
                       return 'Email address is required';
@@ -60,10 +75,18 @@ var formKey = GlobalKey<FormState>();
                     if (text == null || text.trim().isEmpty) {
                       return 'Password is required';
                     }
+                    if (text.trim().length < 6) {
+                      return 'Weak password';
+                    }
                     return null;
                   },
+                  obscureText: securePassword,
                   decoration: InputDecoration(
-                      labelText: 'Password'
+                      labelText: 'Password',
+                    suffixIcon: GestureDetector(
+                      onTap: () => setState((){securePassword = !securePassword;}),
+                      child: Icon(securePassword? Icons.visibility_off: Icons.visibility),
+                    )
                   ),
                   controller: passwordController,
                 ),
@@ -78,8 +101,13 @@ var formKey = GlobalKey<FormState>();
                     }
                     return null;
                   },
+                  obscureText: securePasswordConfirm,
                   decoration: InputDecoration(
-                      labelText: 'Confirm password'
+                      labelText: 'Confirm password',
+                      suffixIcon: GestureDetector(
+                        onTap: () => setState((){securePasswordConfirm = !securePasswordConfirm;}),
+                        child: Icon(securePasswordConfirm? Icons.visibility_off: Icons.visibility),
+                      )
                   ),
                   controller: passwordIIController,
                 ),
@@ -88,7 +116,7 @@ var formKey = GlobalKey<FormState>();
                   if (formKey.currentState?.validate() == false) {
                     return;
                   }
-                  register(context);
+                  register();
                 }, child: Text(
                   'Sign Up'
                 )),
@@ -105,7 +133,7 @@ var formKey = GlobalKey<FormState>();
     );
   }
 
-void register(BuildContext context) async {
+void register() async {
   var url = '${EndPoint.baseURL}${EndPoint.register}';
 
   var dio = Dio();
@@ -123,8 +151,15 @@ void register(BuildContext context) async {
     if (response.statusCode == 200) {
       // Request successful
       print('Data posted successfully');
-      ResetProductDataScreen.name= nameController.text;
-      navigateAndFinish(context: context, route: Routes.resetProductData);
+      if(response.data.containsValue(true)) {
+        ResetProductDataScreen.name= nameController.text;
+        navigateAndFinish(context: context, route: Routes.resetProductData);
+        emailController.clear();
+        nameController.clear();
+        passwordController.clear();
+        passwordIIController.clear();
+      }
+      else Fluttertoast.showToast(msg: 'Entered email is already used for an account');
     } else {
       // Request failed
       print('Failed to post data. Error: ${response.statusCode}');

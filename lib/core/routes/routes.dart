@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:softagi/layout/auth/login/presentation/screens/login_screen.dart';
-import 'package:softagi/layout/auth/login/presentation/screens/splash_screen.dart';
-import 'package:softagi/layout/auth/register/presentation/screens/register_screen.dart';
+import 'package:softagi/layout/auth/presentation/screens/login_screen.dart';
+import 'package:softagi/layout/auth/presentation/screens/register_screen.dart';
+import 'package:softagi/layout/auth/presentation/screens/splash_screen.dart';
 import 'package:softagi/layout/products/reset_product_data_screen.dart';
 
 class Routes{
