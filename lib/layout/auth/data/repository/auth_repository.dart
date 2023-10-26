@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:softagi/core/database/api/api_consumer.dart';
 import 'package:softagi/core/database/api/end_points.dart';
 import 'package:softagi/core/error/exceptions.dart';
@@ -9,9 +10,10 @@ class AuthRepository {
   Future<Either<String, LoginModel>> login(
       {required String email, required String password}) async {
     try {
-      final response = await sl<APIConsumer>().post(EndPoint.login,
-          data: {APIKeys.email: email, APIKeys.password: password});
-      return Right(LoginModel.fromJson(response));
+      final response = await Dio().post(EndPoint.login,  data: {APIKeys.email: email, APIKeys.password: password});
+      /*await sl<APIConsumer>().post(EndPoint.login,
+          data: {APIKeys.email: email, APIKeys.password: password});*/
+      return Right(LoginModel.fromJson(response.data));
     } on ServerException catch (error) {
       return Left(error.errorModel.errorMessage);
     }

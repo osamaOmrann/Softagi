@@ -5,17 +5,18 @@ import 'package:softagi/core/bloc/cubit/global_state.dart';
 import 'package:softagi/core/routes/routes.dart';
 import 'package:softagi/core/services/service_locator.dart';
 import 'package:softagi/core/theme/app_theme.dart';
-import 'package:softagi/layout/auth/data/repository/auth_repository.dart';
 import 'package:softagi/layout/auth/presentation/cubit/login_cubit.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initServiceLocator();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => GlobalCubit(),
+        create: (context) => sl<GlobalCubit>(),
       ),
       BlocProvider(
-        create: (context) => LoginCubit(AuthRepository()),
+        create: (context) => sl<LoginCubit>(),
       ),
     ],
     child: Softagi(),

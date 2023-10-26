@@ -25,6 +25,7 @@ class LoginScreen extends StatelessWidget {
             listener: (context, state) {
               if(state is LoginSuccessState) {
                 Fluttertoast.showToast(msg: 'Successful login ✔');
+                navigateAndFinish(context: context, route: Routes.products);
               }
               if(state is LoginErrorState ) {
                 Fluttertoast.showToast(msg: state.message);

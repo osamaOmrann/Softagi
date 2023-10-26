@@ -43,6 +43,7 @@ dependencies:
   get_it: ^7.6.4
   dartz: ^0.10.1
   flutter_spinkit: ^5.2.0
+  intl_phone_field: ^3.2.0
 
 dev_dependencies:
   flutter_test:

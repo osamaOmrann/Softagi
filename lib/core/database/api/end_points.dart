@@ -2,10 +2,7 @@ class EndPoint {
   static const String baseURL = 'https://student.valuxapps.com/api/';
   static const String register = 'register';
   static const String login = 'login';
-
-  /*static String registerEndPoint() {
-    return register;
-  }*/
+  static const String product = 'product';
 }
 
 class APIKeys {

@@ -6,10 +6,10 @@ import '../cache/cache_helper.dart';
 class ApiInterceptors extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers[APIKeys.token] =
+    /*options.headers[APIKeys.token] =
     sl<CacheHelper>().getData(key: APIKeys.token) != null
         ? '${sl<CacheHelper>().getData(key: APIKeys.token)}'
-        : null;
+        : null;*/
     super.onRequest(options, handler);
   }
 

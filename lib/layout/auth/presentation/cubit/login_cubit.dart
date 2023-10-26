@@ -4,10 +4,16 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:softagi/core/commons/commons.dart';
 import 'package:softagi/core/database/api/end_points.dart';
+import 'package:softagi/core/database/cache/cache_helper.dart';
+import 'package:softagi/core/routes/routes.dart';
+import 'package:softagi/core/services/service_locator.dart';
 import 'package:softagi/layout/auth/data/models/login_model.dart';
 import 'package:softagi/layout/auth/data/repository/auth_repository.dart';
 import 'package:softagi/layout/auth/presentation/cubit/login_state.dart';
+import 'package:softagi/layout/products/presentation/screens/products_screen.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this.authRepo) : super(LoginInitial());
@@ -52,6 +58,14 @@ class LoginCubit extends Cubit<LoginState> {
         print(response.data);
         if(response.data.containsValue(true)) {
           log('true');
+          // await SharedHelper.saveData(key: APIKeys.token, value: response.data["data"]["token"]);
+
+            final SharedPreferences s = await SharedPreferences.getInstance();
+            await s.setString('token', response.data["data"]["token"] ?? '');
+            await s.setString('name', response.data["data"]["name"] ?? '');
+
+          log(response.data["data"]["token"]);
+          ProductsScreen.name = response.data["data"]["name"];
           emit(LoginSuccessState());
           emailController.clear();
           passwordController.clear();

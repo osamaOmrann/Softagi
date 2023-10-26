@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:softagi/core/commons/commons.dart';
 import 'package:softagi/core/routes/routes.dart';
 import 'package:softagi/core/utils/colors.dart';
@@ -16,7 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
     navigateAfter3Seconds();
   }
   void navigateAfter3Seconds() {
-    Future.delayed(Duration(seconds: 3)).then((value) => navigateAndFinish(context: context, route: Routes.login));
+    Future.delayed(Duration(seconds: 3)).then((value) async {
+      final SharedPreferences s = await SharedPreferences.getInstance();
+      String? token = await s.getString('token');
+      navigateAndFinish(context: context, route: token == null || token == ''? Routes.login: Routes.products);
+    });
   }
   @override
   Widget build(BuildContext context) {
