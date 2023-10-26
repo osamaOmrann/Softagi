@@ -212,9 +212,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordIIController.clear();
         } else {
           Fluttertoast.showToast(
-              msg: 'Entered email is already used for an account');
+              msg: 'Entered email or phone number is already used for an account');
           setState(() {
-            isLoading = true;
+            isLoading = false;
           });
         }
       } else {
@@ -222,7 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         print('Failed to post data. Error: ${response.statusCode}');
         Fluttertoast.showToast(msg: response.statusCode.toString());
         setState(() {
-          isLoading = true;
+          isLoading = false;
         });
       }
     } catch (error) {
@@ -230,11 +230,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       print('Error while making the request: $error');
       Fluttertoast.showToast(msg: error.toString());
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
     }
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
   }
 }
